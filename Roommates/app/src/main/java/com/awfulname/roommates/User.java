@@ -10,6 +10,16 @@ public class User
     private String password;
     private String email;
     private String username;
+    private int id;
+
+    public User(String username, String password)
+    {
+        this.password = password;
+        this.username = username;
+        this.name = "";
+        this.email = "";
+        this.id = -1;
+    }
 
     public User(String name, String username, String password, String email)
     {
@@ -19,12 +29,13 @@ public class User
         this.username = username;
     }
 
-    public User(String username, String password)
+    public User(String username, String name, String email, int id)
     {
-        this.password = password;
+        this.password = "";
         this.username = username;
-        this.name = "";
-        this.email = "";
+        this.name = name;
+        this.email = email;
+        this.id = id;
     }
 
     public String getName() {

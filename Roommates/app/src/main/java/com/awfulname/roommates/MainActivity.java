@@ -1,6 +1,7 @@
 package com.awfulname.roommates;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,11 @@ public class MainActivity extends Activity {
         if (authenticate() == true)
         {
             displayUserDetails();
+        }
+        else
+        {
+            Intent i = new Intent(getApplicationContext(), Login.class);
+            startActivity(i);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.awfulname.roommates;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -80,6 +81,7 @@ public class Register extends Activity {
             {
                 String fullName = firstName + " " + lastName;
                 User user = new User(fullName, userName, password, email);
+                registerUser(user);
             }
         }
         catch(Exception e)
@@ -87,5 +89,16 @@ public class Register extends Activity {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    private void registerUser(User user)
+    {
+        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.storeUserDataInBackground(user, new GetUserCallback() {
+            @Override
+            public void done(User returnedUser) {
+                startActivity(new Intent(Register.this, Login.class));
+            }
+        });
     }
 }

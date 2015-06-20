@@ -1,6 +1,7 @@
 package com.awfulname.roommates;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,8 +39,7 @@ public class Login extends Activity {
         userLocalStore = new UserLocalStore(this);
 
         //Onclick listener's for Buttons
-        btnLogin.setOnClickListener(new Button.OnClickListener()
-        {
+        btnLogin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginClick();
@@ -58,28 +58,22 @@ public class Login extends Activity {
     private void loginClick()
     {
         Toast toast;
+        //get username and password
         userName = etUserName.getText().toString();
         userPassword = etPassword.getText().toString();
+        //make sure that the user entered in all data
         if (userName.isEmpty() || userPassword.isEmpty())
         {
             toast = Toast.makeText(this, "Please Enter All Required Fields", Toast.LENGTH_LONG);
             toast.show();
             return;
         }
+        //if they did, authenticate the user.
         else
         {
-            toast = Toast.makeText(this, "This Button does nothing", Toast.LENGTH_LONG);
-            toast.show();
+            User user = new User(userName, userPassword);
+            authenticate(user);
         }
-
-
-        //TODO : get information from server
-        User user = new User("swag","swag","swag","swag");
-        userLocalStore.storeUserData(user);
-        userLocalStore.setUserLoggedIn(true);
-
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
     }
 
     private void registerClick()
@@ -88,4 +82,38 @@ public class Login extends Activity {
         startActivity(i);
     }
 
+    private void authenticate(User user)
+    {
+        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.fetchUserDataInBackground(user, new GetUserCallback() {
+            @Override
+            public void done(User returnedUser)
+            {
+                if (returnedUser == null) {
+                    showErrorMessage();
+                }
+                else
+                {
+                    logUserIn(returnedUser);
+                }
+            }
+        });
+    }
+
+    private void logUserIn(User returnedUser)
+    {
+        userLocalStore.storeUserData(returnedUser);
+        userLocalStore.setUserLoggedIn(true);
+
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+    }
+
+    private void showErrorMessage()
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Login.this);
+        dialogBuilder.setMessage("No such user was found");
+        dialogBuilder.setPositiveButton("Ok", null);
+        dialogBuilder.show();
+    }
 }
