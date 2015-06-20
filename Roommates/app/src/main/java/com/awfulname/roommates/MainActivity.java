@@ -4,14 +4,63 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
+
+    private Button btnLogout;
+    private UserLocalStore userLocalStore;
+    private TextView tvUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+        tvUserName = (TextView) findViewById(R.id.tvUserName);
+        userLocalStore = new UserLocalStore(this);
+
+        btnLogout.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickLogout();
+            }
+
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (authenticate() == true)
+        {
+            displayUserDetails();
+        }
+    }
+
+    //checks to see if a user is logged in
+    private boolean authenticate()
+    {
+        return userLocalStore.getUserLoginStatus();
+    }
+
+    private void displayUserDetails()
+    {
+        User user = userLocalStore.getLoggedInUser();
+
+        tvUserName.setText("Welcome " + user.getName());
+    }
+
+    //method that will be used for logging out
+    private void clickLogout() {
+        userLocalStore.clearUserData();
+        userLocalStore.setUserLoggedIn(false);
+        displayUserDetails();
     }
 
 
