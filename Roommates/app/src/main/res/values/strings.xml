@@ -3,4 +3,6 @@
 
     <string name="kait_text">Kait was here</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="action_logout">Log Out</string>
 </resources>
