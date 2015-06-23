@@ -27,13 +27,19 @@ public class ServerRequests
     private ProgressDialog progressDialog;
     public static final int CONNECTION_TIMEOUT = 1000 * 15;
     public static final String SERVER_ADDRESS = "http://roommates.comoj.com/";
+    private boolean success;
 
+    public boolean wasSuccessful()
+    {
+        return success;
+    }
     public ServerRequests(Context context)
     {
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Processing");
         progressDialog.setTitle("Please wait...");
+        success = false;
     }
 
     public void storeUserDataInBackground(User user, GetUserCallback callBack)
@@ -106,6 +112,8 @@ public class ServerRequests
                     r.append(line);
                 }
                 client.disconnect();
+                JSONObject serverResponse = new JSONObject(r.toString());
+                success = serverResponse.getBoolean("success");
             }
             catch (Exception ex)
             {

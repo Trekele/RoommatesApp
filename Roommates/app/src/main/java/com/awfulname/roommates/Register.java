@@ -1,6 +1,7 @@
 package com.awfulname.roommates;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class Register extends Activity {
     private EditText etPassword;
     private EditText etConfirmPassword;
     private Button btnRegister;
+    private ServerRequests serverRequests;
 
     //user's email & password
     private String userEmail, userPassword;
@@ -29,6 +31,7 @@ public class Register extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
 
         //getting all of the text fields and buttons
         etFirstName = (EditText) findViewById(R.id.etFirstName);
@@ -93,12 +96,26 @@ public class Register extends Activity {
 
     private void registerUser(User user)
     {
-        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests = new ServerRequests(this);
         serverRequests.storeUserDataInBackground(user, new GetUserCallback() {
             @Override
             public void done(User returnedUser) {
-                startActivity(new Intent(Register.this, Login.class));
+                if(serverRequests.wasSuccessful()) {
+                    startActivity(new Intent(Register.this, Login.class));
+                }
+                else
+                {
+                    displayErrorMessage();
+                }
             }
         });
+    }
+
+    public void displayErrorMessage()
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Register.this);
+        dialogBuilder.setMessage("Username unavailable. Please choose another.");
+        dialogBuilder.setPositiveButton("Ok", null);
+        dialogBuilder.show();
     }
 }
