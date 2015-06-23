@@ -88,7 +88,9 @@ public class MainActivity extends Activity {
         switch(id) {
             case R.id.action_settings:
                 return true;
-            case R.id.action_logout:
+            case R.id.action_help:
+                return true;
+            case R.id.action_signout:
                 return true;
         }
         /*if (id == R.id.action_settings) {
