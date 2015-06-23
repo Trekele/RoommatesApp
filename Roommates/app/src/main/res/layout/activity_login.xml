@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Username"
+        android:textColor="@color/primary_dark"
         android:id="@+id/tvUserName" />
 
     <EditText
@@ -17,6 +18,7 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/etUserName"
+        android:textColor="@color/primary"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -24,6 +26,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Password"
+        android:textColor="@color/primary_dark"
         android:id="@+id/tvPassword" />
 
     <EditText
@@ -31,6 +34,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
+        android:textColor="@color/primary"
         android:id="@+id/etPassword" />
 
     <Button
