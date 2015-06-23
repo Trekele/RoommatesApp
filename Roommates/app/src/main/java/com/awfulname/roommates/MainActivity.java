@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    private Button btnLogout;
     private UserLocalStore userLocalStore;
     private TextView tvUserName;
 
@@ -21,17 +20,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnLogout = (Button) findViewById(R.id.btnLogout);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         userLocalStore = new UserLocalStore(this);
-
-        btnLogout.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickLogout();
-            }
-
-        });
     }
 
     @Override
@@ -62,14 +52,6 @@ public class MainActivity extends Activity {
         tvUserName.setText("Welcome " + user.getName());
     }
 
-    //method that will be used for logging out
-    private void clickLogout() {
-        userLocalStore.clearUserData();
-        userLocalStore.setUserLoggedIn(false);
-        displayUserDetails();
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -91,6 +73,10 @@ public class MainActivity extends Activity {
             case R.id.action_help:
                 return true;
             case R.id.action_signout:
+                userLocalStore.clearUserData();
+                userLocalStore.setUserLoggedIn(false);
+                Intent i = new Intent(getApplicationContext(), Login.class);
+                startActivity(i);
                 return true;
         }
         /*if (id == R.id.action_settings) {
