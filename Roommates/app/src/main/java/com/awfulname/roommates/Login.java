@@ -105,7 +105,7 @@ public class Login extends Activity {
         userLocalStore.storeUserData(returnedUser);
         userLocalStore.setUserLoggedIn(true);
 
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), NavigationDrawerMain.class);
         startActivity(i);
     }
 
